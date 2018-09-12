@@ -1,23 +1,60 @@
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { Component } from 'react';
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import { createStackNavigator, createMaterialTopTabNavigator } from 'react-navigation';
+import { background, text } from './utils/colors';
 
-export default class App extends React.Component {
+import Decks from './components/Decks';
+import DeckEditor from './components/DeckEditor';
+import DeckView from './views/DeckView';
+import QuizView from './views/QuizView';
+
+import reducer from './reducers';
+
+const Tabs = createMaterialTopTabNavigator({
+  'Decks': {
+    screen: Decks,
+  },
+  'New Deck': {
+    screen: DeckEditor
+  }
+},
+  {
+    tabBarOptions: {
+      style: {
+        backgroundColor: background
+      }
+    }
+  });
+
+const Stack =  createStackNavigator({
+  'MobileFlashcards': {
+    screen: Tabs,
+    navigationOptions: {
+      title: 'Mobile Flashcards',
+      headerStyle: {
+        backgroundColor: background,
+      },
+      headerTintColor: text,
+      headerTitleStyle: {
+        fontWeight: 'bold'
+      }
+    }
+  },
+  'DeckView': {
+    screen: DeckView
+  },
+  'QuizView': {
+    screen: QuizView
+  },
+});
+
+export default class App extends Component {
   render() {
-    return (
-      <View style={styles.container}>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-      </View>
+    return(
+      <Provider store={createStore(reducer)}>
+        <Stack />
+      </Provider>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

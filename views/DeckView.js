@@ -1,0 +1,77 @@
+import React, { Component } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity  } from 'react-native';
+import { background, text } from '../utils/colors';
+
+import Button from '../components/Button'
+
+export default class DeckView extends Component {
+  static navigationOptions = {
+    title: 'Deck',
+    headerStyle: {
+      backgroundColor: background,
+    },
+    headerTintColor: text,
+    headerTitleStyle: {
+      fontWeight: 'bold'
+    } 
+  }
+
+  constructor(props) {
+    super(props);
+
+    const deck = this.props.navigation.getParam('deck');
+
+    this.state = {
+      deck,
+    }
+  }
+
+  _startQuiz = () => {
+    this.props.navigation.navigate('QuizView', { deck: this.state.deck });
+  }
+
+  render() {
+
+    return (
+      <View style={styles.container}>
+        <View style={styles.deckSummary}>
+          <Text style={styles.title}>{this.state.deck.title}</Text>
+          <Text style={styles.subtitle}>{`${this.state.deck.questions.length} card${(this.state.deck.questions.length > 1) ? 's' : '' }`}</Text>
+        </View>
+        <View>
+          <Button label='Add Card'></Button>
+          <Button label='Start Quiz' onPress={this._startQuiz}></Button>
+        </View>
+      </View>
+    );
+  }
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  deckSummary: {
+    alignItems: 'center',
+    marginBottom: 40
+  },
+  title: {
+    fontSize: 50,
+    fontWeight: 'bold'
+  },
+  subtitle: {
+    fontSize: 20
+  },
+  button: {
+    alignItems: 'center',
+    backgroundColor: '#DDDDDD',
+    paddingLeft: 25,
+    paddingRight: 25,
+    paddingTop: 15,
+    paddingBottom: 15,
+    borderRadius: 5,
+    margin: 5
+  },
+});
