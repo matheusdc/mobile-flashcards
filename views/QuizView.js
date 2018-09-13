@@ -57,11 +57,16 @@ export default class QuizView extends Component {
       <View style={styles.container}>
         <View style={styles.questionContainer}>
           {(activeQuestionIndex < questions.length)
-          ? <View style={styles.questionContainer}>
-              <Text>{activeQuestionIndex + 1}/{questions.length}</Text>
-              <Card question={activeQuestion.question} answer={activeQuestion.answer} />
-              <Button label='Correct' onPress={this._handleCorrect}></Button>
-              <Button label='Incorrect' onPress={this._handleNextQuestion}></Button>
+          ? <View style={styles.container}>
+              <View style={styles.cardContainer}>
+                <Card question={activeQuestion.question} 
+                  answer={activeQuestion.answer} 
+                  location={`${activeQuestionIndex + 1}/${questions.length}`}/>
+              </View>
+              <View style={styles.cardActions}>
+                <Button label='Correct' onPress={this._handleCorrect}></Button>
+                <Button label='Incorrect' onPress={this._handleNextQuestion}></Button>
+              </View>
             </View>
           : <QuizResults 
               correct={correctAnswers} 
@@ -82,11 +87,17 @@ const styles = StyleSheet.create({
   },
   questionContainer: {
     alignItems: 'center',
-    marginBottom: 40
+    marginBottom: 10
   },
   question: {
     textAlign: 'center',
     fontSize: 35,
     fontWeight: 'bold'
+  },
+  cardActions: {
+    flexDirection: 'row'
+  },
+  cardContainer: {
+    flex: 1,
   }
 });
