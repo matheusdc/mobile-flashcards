@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity  } from 'react-native';
 
 export default Deck = (props) => {
-  console.log(props.navigate);
-
   return (
     <TouchableOpacity onPress={() => { props.navigate('DeckView', props.item) }}>
       <View style={style.listItem}>

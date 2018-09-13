@@ -10,6 +10,7 @@ import DeckView from './views/DeckView';
 import QuizView from './views/QuizView';
 
 import reducer from './reducers';
+import CardEditor from './components/CardEditor';
 
 const Tabs = createMaterialTopTabNavigator({
   'Decks': {
@@ -46,6 +47,9 @@ const Stack =  createStackNavigator({
   },
   'QuizView': {
     screen: QuizView
+  },
+  'AddCard': {
+    screen: CardEditor
   },
 });
 

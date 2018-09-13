@@ -2,7 +2,9 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, TouchableOpacity  } from 'react-native';
 import { background, text } from '../utils/colors';
 
-import Button from '../components/Button'
+import Card from '../components/Card';
+import QuizResults from '../components/QuizResults';
+import Button from '../components/Button';
 
 export default class QuizView extends Component {
   static navigationOptions = {
@@ -27,37 +29,45 @@ export default class QuizView extends Component {
     }
   }
 
-  _startQuiz = () => {
-    this.props.navigation.navigate('');
-  }
-  
   _handleCorrect = () => {
     this.setState({ correctAnswers: this.state.correctAnswers + 1 });
     this._handleNextQuestion();
   }
 
   _handleNextQuestion = () => {
-    if(this.state.activeQuestionIndex < this.state.questions.length - 1){
+    if(this.state.activeQuestionIndex < this.state.questions.length){
       this.setState({ activeQuestionIndex: this.state.activeQuestionIndex + 1 });
       return;
     }
-    this.props.navigation.navigate('ResultsView');
+  }
+
+  handleRestartQuiz = () => {
+    this.setState({ activeQuestionIndex: 0, correctAnswers: 0 });
+  } 
+
+  handleBackButton = () => {
+    this.props.navigation.navigate('Decks');
   }
 
   render() {
-    const { questions, activeQuestionIndex } = this.state;
+    const { questions, activeQuestionIndex, correctAnswers } = this.state;
     const activeQuestion = questions[activeQuestionIndex];
 
     return (
       <View style={styles.container}>
         <View style={styles.questionContainer}>
-          <View>
-            <Text style={styles.question}>{activeQuestion.question}</Text>
-          </View>
-          <View>
-            <Button label='Correct' onPress={this._handleCorrect}></Button>
-            <Button label='Incorrect' onPress={this._handleNextQuestion}></Button>
-        </View>
+          {(activeQuestionIndex < questions.length)
+          ? <View style={styles.questionContainer}>
+              <Text>{activeQuestionIndex + 1}/{questions.length}</Text>
+              <Card question={activeQuestion.question} answer={activeQuestion.answer} />
+              <Button label='Correct' onPress={this._handleCorrect}></Button>
+              <Button label='Incorrect' onPress={this._handleNextQuestion}></Button>
+            </View>
+          : <QuizResults 
+              correct={correctAnswers} 
+              total={questions.length}
+              restartQuiz={this.handleRestartQuiz}
+              handleBackButton={this.handleBackButton} />}
         </View>
       </View>
     );

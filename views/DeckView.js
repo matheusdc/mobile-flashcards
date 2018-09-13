@@ -26,8 +26,18 @@ export default class DeckView extends Component {
     }
   }
 
+  componentDidUpdate() {
+    const deck = this.props.navigation.getParam('deck');
+    if(JSON.stringify(deck) !== JSON.stringify(this.state.deck))
+      this.setState({ deck });
+  }
+
   _startQuiz = () => {
     this.props.navigation.navigate('QuizView', { deck: this.state.deck });
+  }
+
+  _addCard = () => {
+    this.props.navigation.navigate('AddCard', { deck: this.state.deck });
   }
 
   render() {
@@ -39,7 +49,7 @@ export default class DeckView extends Component {
           <Text style={styles.subtitle}>{`${this.state.deck.questions.length} card${(this.state.deck.questions.length > 1) ? 's' : '' }`}</Text>
         </View>
         <View>
-          <Button label='Add Card'></Button>
+          <Button label='Add Card' onPress={this._addCard}></Button>
           <Button label='Start Quiz' onPress={this._startQuiz}></Button>
         </View>
       </View>

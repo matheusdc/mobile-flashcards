@@ -10,7 +10,7 @@ export function createDeck (deck) {
 
 export function addCard (card, deck) {
   return {
-    type: ADD_ENTRIES,
+    type: ADD_CARD,
     card,
     deck
   }
