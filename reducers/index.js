@@ -1,4 +1,4 @@
-import { CREATE_DECK, ADD_CARD } from '../actions'
+import { CREATE_DECK, ADD_CARD, RESET } from '../actions'
 
 const initialState = {
   React: {
@@ -25,14 +25,14 @@ const initialState = {
   }
 };
 
-export default function reducer(state = initialState, action) {
+export default function reducer(state = {}, action) {
   const { deck, card } = action;
   switch(action.type) {
     case CREATE_DECK:
       return {
         ...state,
         [deck.title]: deck,
-      }
+      };
     case ADD_CARD:
       return {
         ...state,
@@ -40,7 +40,9 @@ export default function reducer(state = initialState, action) {
           ...deck,
           questions: deck.questions.concat([card])
         }
-      }
+      };
+    case RESET:
+      return {};
     default:
       return state
   }

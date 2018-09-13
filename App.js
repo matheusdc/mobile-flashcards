@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Provider } from 'react-redux';
 import { createStore } from 'redux';
-import { createStackNavigator, createMaterialTopTabNavigator } from 'react-navigation';
+import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
 import { background, text } from './utils/colors';
 
 import Decks from './components/Decks';
@@ -12,21 +12,14 @@ import QuizView from './views/QuizView';
 import reducer from './reducers';
 import CardEditor from './components/CardEditor';
 
-const Tabs = createMaterialTopTabNavigator({
+const Tabs = createBottomTabNavigator({
   'Decks': {
     screen: Decks,
   },
   'New Deck': {
     screen: DeckEditor
   }
-},
-  {
-    tabBarOptions: {
-      style: {
-        backgroundColor: background
-      }
-    }
-  });
+});
 
 const Stack =  createStackNavigator({
   'MobileFlashcards': {

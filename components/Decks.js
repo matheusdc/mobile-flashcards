@@ -1,8 +1,15 @@
 import React from 'react';
 import { StyleSheet, Text, View, FlatList, TouchableOpacity } from 'react-native';
+import { Entypo, Foundation } from '@expo/vector-icons';
 import { connect } from 'react-redux';
+import { createDeck, resetDecks } from '../actions';
+import { getDecks, reset } from '../utils/api';
+import Button from './Button';
 
 class Decks extends React.Component {
+  static navigationOptions = {
+    tabBarIcon: ({ tintColor }) => (<Foundation name='folder' size={25} color={tintColor} />)
+  }
   _renderItem = ({ item }) => {
     return (
       <TouchableOpacity onPress={() => { this.props.navigation.navigate('DeckView', { deck: item}) }}>
@@ -14,15 +21,41 @@ class Decks extends React.Component {
     );
   }
 
+  componentDidMount() {
+    getDecks().then((decks) => {
+      const deckArray = Object.values(decks);
+      deckArray.map(deck => {
+        this.props.createDeck(deck);
+      });
+    })
+    .catch(err => console.log('Error while fetching data from AsyncStorage: ', err));
+  }
+
+  handleReset = () => {
+    this.props.resetDecks();
+    reset();
+  }
+
   render() {
+
+    if(this.props.decks.length === 0) {
+      return (
+        <View style={styles.emptyContainer}>
+          <Entypo name='emoji-sad' size={100} />
+          <Text style={{paddingTop: 10, fontWeight: 'bold'}}>There are no decks created yet...</Text>
+        </View>
+      );
+    }
     return (
       <View style={styles.container}>
+        { (this.props.decks.length === 0 && <Text>No decks available...</Text>)}
         <FlatList 
           contentContainerStyle={styles.listContainer}
           data={this.props.decks}
           keyExtractor={(item) => item.title}
           renderItem={this._renderItem}
         />
+        <Button label='Reset App Storage' onPress={this.handleReset} />
       </View>
     );
   }
@@ -31,6 +64,11 @@ class Decks extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  emptyContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   listContainer: {
   },
@@ -41,6 +79,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     borderBottomWidth: 1,
+    borderColor: '#aaa',
     padding: 10
   },
   subtitle: {
@@ -55,4 +94,11 @@ function mapStateToProps (state) {
   }
 }
 
-export default connect(mapStateToProps)(Decks)
+const mapDispatchToProps = (dispatch) => {
+  return {
+      createDeck: (deck) => dispatch(createDeck(deck)),
+      resetDecks: () => dispatch(resetDecks())
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Decks)

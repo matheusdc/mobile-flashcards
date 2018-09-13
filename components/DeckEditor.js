@@ -1,12 +1,17 @@
 import React from 'react';
 import { StyleSheet, Text, KeyboardAvoidingView, TextInput } from 'react-native';
+import { Foundation } from '@expo/vector-icons';
 import { connect } from 'react-redux';
 
 import Button from './Button';
-
-import { createDeck } from '../actions'
+import { createDeck } from '../actions';
+import { submitDeck } from '../utils/api';
 
 class DeckEditor extends React.Component {
+  static navigationOptions = {
+    tabBarIcon: ({ tintColor }) => (<Foundation name='folder-add' size={25} color={tintColor} />)
+  }
+
   constructor(props) {
     super(props);
 
@@ -22,12 +27,17 @@ class DeckEditor extends React.Component {
   }
 
   _handleSubmit = () => {
+    if(this.state.title.length === 0) 
+      return alert('Please fill the title field');
+    
     const deck = {
       ...this.state,
       questions: []
     }
     
     this.props.createDeck(deck);
+
+    submitDeck(deck).then((data) => console.log('Saving deck: ', data)).catch(err => console.log('Error while saving deck: ', err));
 
     this.props.navigation.navigate('DeckView', { deck })
   }
@@ -41,6 +51,7 @@ class DeckEditor extends React.Component {
           style={styles.textInput}
           onChangeText={this._handleChange}
           value={this.state.text}
+          placeholder='Title'
         />
         <Button label="Save" onPress={this._handleSubmit}/>
       </KeyboardAvoidingView>
@@ -57,10 +68,11 @@ const styles = StyleSheet.create({
   },
   label: {
     textAlign: 'center',
-    fontSize: 35,
+    fontSize: 25,
     fontWeight: 'bold'
   },
   textInput: {
+    padding: 5,
     height: 40,
     width: 240,
     margin: 10,

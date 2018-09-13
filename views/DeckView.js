@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity  } from 'react-native';
+import { StyleSheet, Text, View  } from 'react-native';
 import { background, text } from '../utils/colors';
 
 import Button from '../components/Button'
@@ -50,7 +50,7 @@ export default class DeckView extends Component {
         </View>
         <View>
           <Button label='Add Card' onPress={this._addCard}></Button>
-          <Button label='Start Quiz' onPress={this._startQuiz}></Button>
+          {(this.state.deck.questions.length !== 0 && <Button label='Start Quiz' onPress={this._startQuiz} />)}
         </View>
       </View>
     );
