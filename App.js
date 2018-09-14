@@ -8,9 +8,10 @@ import Decks from './components/Decks';
 import DeckEditor from './components/DeckEditor';
 import DeckView from './views/DeckView';
 import QuizView from './views/QuizView';
+import CardEditor from './components/CardEditor';
 
 import reducer from './reducers';
-import CardEditor from './components/CardEditor';
+import { setLocalNotification } from './utils/notifications';
 
 const Tabs = createBottomTabNavigator({
   'Decks': {
@@ -47,6 +48,11 @@ const Stack =  createStackNavigator({
 });
 
 export default class App extends Component {
+
+  componentDidMount() {
+    setLocalNotification();
+  }
+
   render() {
     return(
       <Provider store={createStore(reducer)}>

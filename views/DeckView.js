@@ -2,7 +2,8 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View  } from 'react-native';
 import { background, text } from '../utils/colors';
 
-import Button from '../components/Button'
+import Button from '../components/Button';
+import { clearLocalNotifications, setLocalNotification } from '../utils/notifications';
 
 export default class DeckView extends Component {
   static navigationOptions = {
@@ -34,6 +35,9 @@ export default class DeckView extends Component {
 
   _startQuiz = () => {
     this.props.navigation.navigate('QuizView', { deck: this.state.deck });
+
+    clearLocalNotifications()
+      .then(setLocalNotification);
   }
 
   _addCard = () => {
