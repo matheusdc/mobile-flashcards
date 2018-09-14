@@ -45,8 +45,12 @@ export default class QuizView extends Component {
     this.setState({ activeQuestionIndex: 0, correctAnswers: 0 });
   } 
 
-  handleBackButton = () => {
+  handleBackToHome = () => {
     this.props.navigation.navigate('Decks');
+  }
+
+  handleBackButton = () => {
+    this.props.navigation.goBack();
   }
 
   render() {
@@ -72,7 +76,8 @@ export default class QuizView extends Component {
               correct={correctAnswers} 
               total={questions.length}
               restartQuiz={this.handleRestartQuiz}
-              handleBackButton={this.handleBackButton} />}
+              handleBackButton={this.handleBackButton}
+              handleBackToHome={this.handleBackToHome} />}
         </View>
       </View>
     );

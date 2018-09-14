@@ -12,9 +12,12 @@ export default QuizResults = (props) => {
         <Text style={styles.percentage}>{percentage}%</Text>
         <Text style={styles.message}>correct!</Text>
       </View>
-      <View style={styles.cardActions}>
-          <Button label='Restart Quiz' onPress={props.restartQuiz}></Button>
+      <View>
+        <Button label='Restart Quiz' onPress={props.restartQuiz}></Button>
+        <View style={styles.cardActions}>
           <Button label='Back' onPress={props.handleBackButton}></Button>
+          <Button label='Home' onPress={props.handleBackToHome}></Button>
+        </View>
       </View>
     </View>
   );
@@ -30,6 +33,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    marginBottom: 15
   },
   message: {
     textAlign: 'center',
@@ -42,7 +46,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   cardActions: {
-    marginTop: 10,
     flexDirection: 'row'
   },
 });
